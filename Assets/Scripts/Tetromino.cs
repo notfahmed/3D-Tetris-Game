@@ -29,7 +29,7 @@ public class Tetromino : MonoBehaviour
             transform.position += new Vector3(1, 0, 0);
 			if (CheckIsValidPosition())
 			{
-
+				FindObjectOfType<Game>().UpdateGrid(this);
 			}
 			else
 			{
@@ -41,7 +41,7 @@ public class Tetromino : MonoBehaviour
             transform.position += new Vector3(-1, 0, 0);
             if (CheckIsValidPosition())
             {
-
+		FindObjectOfType<Game>().UpdateGrid(this);
             }
             else
             {
@@ -69,7 +69,7 @@ public class Tetromino : MonoBehaviour
                 }
                 if (CheckIsValidPosition())
                 {
-
+			FindObjectOfType<Game>().UpdateGrid(this);
                 }
                 else
                 {
@@ -98,11 +98,14 @@ public class Tetromino : MonoBehaviour
 
             if (CheckIsValidPosition())
             {
-
+		FindObjectOfType<Game>().UpdateGrid(this);
             }
             else
             {
                 transform.position += new Vector3(0, 1, 0);
+		//Part 6 Changes
+		enabled = false;
+		FindObjectOfType<Game>().SpawnNextTetromino();
             }
 
             fall = Time.time;
