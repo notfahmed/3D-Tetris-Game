@@ -122,7 +122,12 @@ public class Tetromino : MonoBehaviour
 			{
                 return false;
 			}
-
+		//Second Half of Part 7 Changes for Tetromino.cs
+		if(FindObjectOfType<Game>().GetTransformAtGridPosition(pos) != null && FindObjectOfType<Game>().GetTransformAtGridPosition(pos).parent != transform)
+		{
+			return false;
+		}
+		
 		}
         return true;
 	}
