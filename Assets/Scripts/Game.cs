@@ -46,6 +46,19 @@ public class Game : MonoBehaviour
 	}
     }
     
+    //Second Half of Part 7 changes
+    public Transform GetTransformAtGridPosition (Vector2 pos)
+    {
+    	if(pos.y > gridHeight - 1)
+	{
+		return null;
+	}
+	else
+	{
+		return grid[(int)pos.x, (int)pos.y];
+	}
+    }
+    
     public void SpawnNextTetromino()
 	{
         GameObject nextTetromino = (GameObject)Instantiate(Resources.Load(GetRandomTetromino(), typeof(GameObject)), new Vector2(5.0f, 20.0f), Quaternion.identity);
