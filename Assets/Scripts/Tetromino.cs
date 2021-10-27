@@ -116,7 +116,7 @@ public class Tetromino : MonoBehaviour
 	{
         foreach(Transform mino in transform)
 		{
-            Vector2 pos = FindObjectOfType<Game>().round(mino.position);
+            Vector2 pos = FindObjectOfType<Game>().Round(mino.position);
 
             if(FindObjectOfType<Game>().CheckIsInsideGrid(pos) == false)
 			{

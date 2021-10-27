@@ -37,13 +37,13 @@ public class Game : MonoBehaviour
 		}
 	}
     	foreach (Transform mino in tetromino.transform)
-	{
-		Vector2 pos = Round (mino.position);
-		if(pos.y < gridHeight)
-		{
-			grid[(int)pos.x, (int)pos.y] = mino;
-		}
-	}
+	    {
+		    Vector2 pos = Round(mino.position);
+		    if(pos.y < gridHeight)
+		    {
+			    grid[(int)pos.x, (int)pos.y] = mino;
+		    }
+	    }
     }
     
     //Second Half of Part 7 changes
@@ -101,7 +101,7 @@ public class Game : MonoBehaviour
         return ((int)pos.x >= 0 && (int)pos.x < gridWidth && (int)pos.y >= 0);
 	}
 
-    public Vector2 round(Vector2 pos)
+    public Vector2 Round(Vector2 pos)
 	{
         return new Vector2(Mathf.Round(pos.x), Mathf.Round(pos.y));
 	}
