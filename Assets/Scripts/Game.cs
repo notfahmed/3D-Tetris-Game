@@ -63,7 +63,7 @@ public class Game : MonoBehaviour
 	{
 		if(IsFullRowAt(y)) //Find any row that is full
 		{
-			DeleteMinot(y); //Delete the row that is full
+			DeleteMinoAt(y); //Delete the row that is full
 			MoveAllRowsDown(y+1); //Anything above the cleared row should be moved down
 			--y;
 		}
