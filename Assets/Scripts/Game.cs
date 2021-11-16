@@ -15,12 +15,61 @@ public class Game : MonoBehaviour
         SpawnNextTetromino();
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool IsFullRowAt(int y)
     {
-        
+    	for(int x = 0; x < gridWidth; ++x)
+	{
+		if(grid[x, y] == null) //The position is null meaning there is no block in that position therefore the row is not full
+		{
+			return false;
+		}
+	}
+    	return true;
     }
-    //Part 7 Changes
+    
+    public void DeleteMinoAt (int y) //This works along IsFUllRowAt as we can essentially delete rows with this method with the result of the IsFullRowAt
+    {
+    	for(int x = 0; x < gridWidth; ++x)
+	{
+		Destroy(grid[x,y].gameObject);
+		grid[x,y] = null;
+	}
+    }
+    
+    public void MoveRowDown (int y) //This will be used in conjunction with MoveAllRowsDown as we move each row using this method called by MoveAllRowsDown
+    {
+    	for(int x = 0; x < gridWidth; ++x)
+	{
+		if(grid[x,y] != null)
+		{
+			grid[x, y-1] = grid[x,y];
+			grid[x,y] = null;
+			grid[x,y-1].position += new Vector3(0, -1, 0);
+		}
+	}
+    }
+    
+    public void MoveAllRowsDown (int y) //As the name suggests, we move all the rows down by looping through the heigth and calling moverowdown for each level.
+    {
+    	for(int x = y; x < gridHeight; ++x)
+	{
+		MoveRowDown(x);
+	}
+    }
+    
+    public void DeleteRow () //The method that drives all of the other methods so that rows can be cleared with a single call.
+    {
+    	for(int y = 0; y < gridHeight; ++y) //Loop through the height
+	{
+		if(IsFullRowAt(y)) //Find any row that is full
+		{
+			DeleteMinot(y); //Delete the row that is full
+			MoveAllRowsDown(y+1); //Anything above the cleared row should be moved down
+			--y;
+		}
+	}
+    }
+//Part 7 Changes
     public void UpdateGrid (Tetromino tetromino)
     {
     	for(int y = 0; y < gridHeight; ++y)
