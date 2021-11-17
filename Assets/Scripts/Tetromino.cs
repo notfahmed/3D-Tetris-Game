@@ -24,9 +24,15 @@ public class Tetromino : MonoBehaviour
 
     void CheckUserInput()
 	{
-		if (Input.GetKeyDown(KeyCode.RightArrow))
+        /*
+         * If the user inputs the "Right Arrow" Key we transform the current moving tetromino by 1 in the x direction. 
+         *Then we check if the current position is valid. If it is valid we update the grid to show the user the new position
+         *If it is not valid we move back the tetromino by -1 in the x direction to
+        */
+        if (Input.GetKeyDown(KeyCode.RightArrow))
 		{
-            transform.position += new Vector3(1, 0, 0);
+
+            transform.position += new Vector3(1, 0, 0); 
 			if (CheckIsValidPosition())
 			{
 				FindObjectOfType<Game>().UpdateGrid(this);
@@ -98,15 +104,15 @@ public class Tetromino : MonoBehaviour
 
             if (CheckIsValidPosition())
             {
-		FindObjectOfType<Game>().UpdateGrid(this);
+		        FindObjectOfType<Game>().UpdateGrid(this);
             }
             else
             {
                 transform.position += new Vector3(0, 1, 0);
-		FindObjectOfType<Game>().DeleteRow();
-		//Part 6 Changes
-		enabled = false;
-		FindObjectOfType<Game>().SpawnNextTetromino();
+		        FindObjectOfType<Game>().DeleteRow();
+		        //Part 6 Changes
+		        enabled = false;
+		        FindObjectOfType<Game>().SpawnNextTetromino();
             }
 
             fall = Time.time;
