@@ -25,7 +25,7 @@ public class Tetromino : MonoBehaviour
     void CheckUserInput()
 	{
         /*
-         * If the user inputs the "Right Arrow" Key we transform the current moving tetromino by 1 in the x direction. 
+         *If the user inputs the "Right Arrow" Key we transform the current moving tetromino by 1 in the x direction. 
          *Then we check if the current position is valid. If it is valid we update the grid to show the user the new position
          *If it is not valid we move back the tetromino by -1 in the x direction to
         */
@@ -110,7 +110,12 @@ public class Tetromino : MonoBehaviour
             {
                 transform.position += new Vector3(0, 1, 0);
 		        FindObjectOfType<Game>().DeleteRow();
-		        //Part 6 Changes
+
+				if (FindObjectOfType<Game>().CheckIsAboveGrid(this))
+				{
+                    FindObjectOfType<Game>().GameOver();
+				}
+
 		        enabled = false;
 		        FindObjectOfType<Game>().SpawnNextTetromino();
             }
@@ -125,16 +130,17 @@ public class Tetromino : MonoBehaviour
 		{
             Vector2 pos = FindObjectOfType<Game>().Round(mino.position);
 
+            //Checks if a tetromino is within a grid
             if(FindObjectOfType<Game>().CheckIsInsideGrid(pos) == false)
 			{
                 return false;
 			}
-		//Second Half of Part 7 Changes for Tetromino.cs
-		if(FindObjectOfType<Game>().GetTransformAtGridPosition(pos) != null && FindObjectOfType<Game>().GetTransformAtGridPosition(pos).parent != transform)
-		{
-			return false;
-		}
-		
+
+		    //Checks if the tetromino colided with another tetromino
+		    if(FindObjectOfType<Game>().GetTransformAtGridPosition(pos) != null && FindObjectOfType<Game>().GetTransformAtGridPosition(pos).parent != transform)
+		    {
+			    return false;
+		    }
 		}
         return true;
 	}

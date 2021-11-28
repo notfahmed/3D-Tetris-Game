@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
@@ -8,6 +10,17 @@ public class Game : MonoBehaviour
     public static int gridHeight = 20;
     //Part 7 Changes
     public static Transform[,] grid = new Transform[gridWidth,gridHeight];
+
+    public int scoreOneLine = 40;
+    public int scoreTwoLines = 100;
+    public int scoreThreeLines = 300;
+    public int scoreFourLines = 1200;
+
+    public Text scoreHUD;
+
+    private int numbersofRowsThisTurn = 0;
+
+    private int currentScore = 0;
     
     // Start is called before the first frame update
     void Start()
@@ -15,16 +28,90 @@ public class Game : MonoBehaviour
         SpawnNextTetromino();
     }
 
+    void Update()
+	{
+        UpdateScore();
+        UpdateUI();
+	}
+
+    public void UpdateUI()
+	{
+        scoreHUD.text = currentScore.ToString();
+	}
+
+    public void UpdateScore()
+	{
+        if(numbersofRowsThisTurn > 0)
+		{
+			switch (numbersofRowsThisTurn)
+			{
+                case 1:
+                    ClearedOneLine();
+                    break;
+                case 2:
+                    ClearedTwoLines();
+                    break;
+                case 3:
+                    ClearedThreeLines();
+                    break;
+                case 4:
+                    ClearedFourLines();
+                    break;
+                default:
+                    break;
+			}
+            numbersofRowsThisTurn = 0;
+		}
+	}
+
+    public void ClearedOneLine()
+	{
+        currentScore += scoreOneLine;
+	}
+
+    public void ClearedTwoLines()
+	{
+        currentScore += scoreTwoLines;
+	}
+
+    public void ClearedThreeLines()
+	{
+        currentScore += scoreThreeLines;
+	}
+
+    public void ClearedFourLines()
+	{
+        currentScore += scoreFourLines;
+	}
+
+    public bool CheckIsAboveGrid(Tetromino tetromino)
+	{
+        for(int i = 0; i < gridWidth; i++)
+		{
+            foreach(Transform mino in tetromino.transform)
+			{
+                Vector2 pos = Round(mino.position);
+                if(pos.y > gridHeight - 1)
+				{
+                    return true;
+				}
+			}
+		}
+        return false;
+	}
+
     public bool IsFullRowAt(int y)
     {
     	for(int x = 0; x < gridWidth; ++x)
-	{
-		if(grid[x, y] == null) //The position is null meaning there is no block in that position therefore the row is not full
-		{
-			return false;
-		}
-	}
-    	return true;
+	    {  
+		    if(grid[x, y] == null) //The position is null meaning there is no block in that position therefore the row is not full
+		    {
+			    return false;
+		    }
+	    }
+        numbersofRowsThisTurn++;
+
+        return true;
     }
     
     public void DeleteMinoAt (int y) //This works along IsFUllRowAt as we can essentially delete rows with this method with the result of the IsFullRowAt
@@ -113,7 +200,7 @@ public class Game : MonoBehaviour
         GameObject nextTetromino = (GameObject)Instantiate(Resources.Load(GetRandomTetromino(), typeof(GameObject)), new Vector2(5.0f, 20.0f), Quaternion.identity);
 	}
     
-    string GetRandomTetromino()
+    string GetRandomTetromino() //Randomly selects a Tetromino for the next piece
 	{
         int randomTetromino = Random.Range(1, 8);
         string randomTetrominoName = "Prefabs/Tetromino_T";
@@ -145,12 +232,17 @@ public class Game : MonoBehaviour
         return randomTetrominoName;
 	}
 
-    public bool CheckIsInsideGrid(Vector2 pos)
+    public void GameOver()
+	{
+        SceneManager.LoadScene("GameOver");
+    }
+
+    public bool CheckIsInsideGrid(Vector2 pos) //Used to check if a Tetromino is inside of the grid
 	{
         return ((int)pos.x >= 0 && (int)pos.x < gridWidth && (int)pos.y >= 0);
 	}
 
-    public Vector2 Round(Vector2 pos)
+    public Vector2 Round(Vector2 pos) //Round function
 	{
         return new Vector2(Mathf.Round(pos.x), Mathf.Round(pos.y));
 	}
