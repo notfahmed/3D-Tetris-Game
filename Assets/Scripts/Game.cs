@@ -8,7 +8,7 @@ public class Game : MonoBehaviour
 {
     public static int gridWidth = 10;
     public static int gridHeight = 20;
-    //Part 7 Changes
+ 
     public static Transform[,] grid = new Transform[gridWidth,gridHeight];
 
     public int scoreOneLine = 40;
@@ -85,6 +85,8 @@ public class Game : MonoBehaviour
 	}
 
     public bool CheckIsAboveGrid(Tetromino tetromino)
+
+        //Checks if a tetromino is above the grid by getting the current position and the grid height then comparing them.
 	{
         for(int i = 0; i < gridWidth; i++)
 		{
@@ -114,18 +116,21 @@ public class Game : MonoBehaviour
         return true;
     }
     
-    public void DeleteMinoAt (int y) //This works along IsFUllRowAt as we can essentially delete rows with this method with the result of the IsFullRowAt
+    public void DeleteMinoAt (int y) 
     {
-    	for(int x = 0; x < gridWidth; ++x)
+        //This works along IsFUllRowAt as we can essentially delete rows with this method with the result of the IsFullRowAt
+        for (int x = 0; x < gridWidth; ++x)
 	{
 		Destroy(grid[x,y].gameObject);
 		grid[x,y] = null;
 	}
     }
     
-    public void MoveRowDown (int y) //This will be used in conjunction with MoveAllRowsDown as we move each row using this method called by MoveAllRowsDown
+    public void MoveRowDown (int y) 
     {
-    	for(int x = 0; x < gridWidth; ++x)
+        //This will be used in conjunction with MoveAllRowsDown as we move each row using this method called by MoveAllRowsDown
+
+        for (int x = 0; x < gridWidth; ++x)
 	{
 		if(grid[x,y] != null)
 		{
@@ -136,17 +141,21 @@ public class Game : MonoBehaviour
 	}
     }
     
-    public void MoveAllRowsDown (int y) //As the name suggests, we move all the rows down by looping through the heigth and calling moverowdown for each level.
+    public void MoveAllRowsDown (int y)
     {
-    	for(int x = y; x < gridHeight; ++x)
+        //As the name suggests, we move all the rows down by looping through the heigth and calling moverowdown for each level.
+
+        for (int x = y; x < gridHeight; ++x)
 	{
 		MoveRowDown(x);
 	}
     }
     
-    public void DeleteRow () //The method that drives all of the other methods so that rows can be cleared with a single call.
+    public void DeleteRow ()
     {
-    	for(int y = 0; y < gridHeight; ++y) //Loop through the height
+        //The method that drives all of the other methods so that rows can be cleared with a single call.
+
+        for (int y = 0; y < gridHeight; ++y) //Loop through the height
 	{
 		if(IsFullRowAt(y)) //Find any row that is full
 		{
@@ -156,22 +165,23 @@ public class Game : MonoBehaviour
 		}
 	}
     }
-//Part 7 Changes
+
     public void UpdateGrid (Tetromino tetromino)
     {
+        //Updates grid everytime a tetromino lands on the grid or other tetrominos
     	for(int y = 0; y < gridHeight; ++y)
-	{
-		for(int x = 0; x < gridWidth; ++x)
-		{
-			if(grid[x, y] != null)
-			{
-				if(grid[x,y].parent == tetromino.transform)
-				{
-					grid[x,y] = null;
-				}
-			}
-		}
-	}
+	    {
+		    for(int x = 0; x < gridWidth; ++x)
+		    {
+			    if(grid[x, y] != null)
+			    {
+				    if(grid[x,y].parent == tetromino.transform)
+				    {
+					    grid[x,y] = null;
+				    }
+			    }
+		    }
+	    }
     	foreach (Transform mino in tetromino.transform)
 	    {
 		    Vector2 pos = Round(mino.position);
@@ -182,17 +192,17 @@ public class Game : MonoBehaviour
 	    }
     }
     
-    //Second Half of Part 7 changes
     public Transform GetTransformAtGridPosition (Vector2 pos)
     {
+        //Check if a piece interfers with another piece in the grid.
     	if(pos.y > gridHeight - 1)
-	{
-		return null;
-	}
-	else
-	{
-		return grid[(int)pos.x, (int)pos.y];
-	}
+	    {
+		    return null;
+	    }
+	    else
+	    {
+		    return grid[(int)pos.x, (int)pos.y];
+	    }
     }
     
     public void SpawnNextTetromino()
@@ -200,8 +210,9 @@ public class Game : MonoBehaviour
         GameObject nextTetromino = (GameObject)Instantiate(Resources.Load(GetRandomTetromino(), typeof(GameObject)), new Vector2(5.0f, 20.0f), Quaternion.identity);
 	}
     
-    string GetRandomTetromino() //Randomly selects a Tetromino for the next piece
+    string GetRandomTetromino() 
 	{
+        //Randomly selects a Tetromino for the next piece
         int randomTetromino = Random.Range(1, 8);
         string randomTetrominoName = "Prefabs/Tetromino_T";
 
@@ -234,6 +245,8 @@ public class Game : MonoBehaviour
 
     public void GameOver()
 	{
+        //Loads Game Over scene
+
         SceneManager.LoadScene("GameOver");
     }
 

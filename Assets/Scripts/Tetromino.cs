@@ -75,7 +75,7 @@ public class Tetromino : MonoBehaviour
                 }
                 if (CheckIsValidPosition())
                 {
-			FindObjectOfType<Game>().UpdateGrid(this);
+			        FindObjectOfType<Game>().UpdateGrid(this);
                 }
                 else
                 {
